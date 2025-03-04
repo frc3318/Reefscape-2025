@@ -155,6 +155,9 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
         public static final double kMaxAccelerationMetersPerSecondSquared = 1;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+        public static final double kMass = 38.5;
+        public static final double kMOI = 4.367;
+        
     
         public static final double kPXController = 1;
         public static final double kPYController = 1;

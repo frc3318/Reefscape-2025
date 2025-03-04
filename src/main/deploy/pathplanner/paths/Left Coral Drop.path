@@ -1,0 +1,82 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.723828125,
+        "y": 6.928550113266729
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.70561686802974,
+        "y": 5.711046047281598
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.445350981644982,
+        "y": 5.832014913452602
+      },
+      "prevControl": {
+        "x": 5.444455221681535,
+        "y": 5.789698042810087
+      },
+      "nextControl": {
+        "x": 2.4136007202602223,
+        "y": 5.918069310525092
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.0421671700743496,
+        "y": 6.928550113266729
+      },
+      "prevControl": {
+        "x": 3.2946441536942377,
+        "y": 6.2802538336431235
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0026593037459284,
+      "rotationDegrees": -90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Extake",
+      "waypointRelativePos": 0.9959404205607477,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -55.66122455575634
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
