@@ -232,7 +232,4 @@ public class Swerve extends SubsystemBase {
     public void stop() {
         driveRobotRelative(new ChassisSpeeds());
     }
-
-    
-
 }
