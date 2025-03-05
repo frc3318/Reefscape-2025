@@ -185,3 +185,9 @@ compile_commands.json
 
 # Eclipse generated file for annotation processors
 .factorypath
+
+# Robot Simulation Files
+simgui-ds.json
+simgui-windows.json
+simgui.json
+networktables.json

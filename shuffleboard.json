@@ -1,0 +1,63 @@
+{
+  "tabPane": [
+    {
+      "title": "SmartDashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 48.0,
+        "showGrid": false,
+        "hgap": 0.0,
+        "vgap": 0.0,
+        "titleType": 1,
+        "tiles": {
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Alerts",
+              "_source0": "network_table:///SmartDashboard/PathPlanner",
+              "_title": "PathPlanner",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto Chooser",
+              "_title": "Auto Chooser",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "LiveWindow",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "LiveWindow/",
+      "widgetPane": {
+        "gridSize": 48.0,
+        "showGrid": false,
+        "hgap": 0.0,
+        "vgap": 0.0,
+        "titleType": 1,
+        "tiles": {}
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": 0,
+    "y": -32,
+    "width": 1920.0,
+    "height": 872.0
+  }
+}

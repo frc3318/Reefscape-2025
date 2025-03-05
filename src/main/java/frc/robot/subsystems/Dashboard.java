@@ -46,32 +46,74 @@ public class Dashboard {
             angleStatus = (modules[i].mAngleMotor.isConnected());
 
             /* Module Position Information */
-            ShuffleboardLayout modulePosition = tabs[i].getLayout("Module Position", BuiltInLayouts.kGrid).withSize(3, 3);
+            ShuffleboardLayout modulePosition = tabs[i].getLayout("Module Position", BuiltInLayouts.kGrid).withSize(8, 11).withPosition(0, 0);
 
-            modulePositionEntries[i][0] = modulePosition.add("Gyro", moduleStates[i].angle.toString()).withWidget("Gyro").getEntry();
-            modulePositionEntries[i][1] = modulePosition.add("Module Status", (angleStatus && driveStatus)).getEntry();
+            modulePositionEntries[i][0] = modulePosition.add("Heading", moduleStates[i].angle.getDegrees()).withWidget("Gyro").withPosition(1, 0).getEntry();
+            modulePositionEntries[i][1] = modulePosition.add("Module Status", (angleStatus && driveStatus)).withPosition(1, 2).getEntry();
 
             /* Angle Motor Information */
-            ShuffleboardLayout angleMotor = tabs[i].getLayout("Angle Motor", BuiltInLayouts.kGrid).withSize(4, 2);
-            angleMotorEntries[i][0] = angleMotor.add("Angle Status", angleStatus).getEntry();
-            angleMotorEntries[i][1] = angleMotor.add("Angle Temperature", modules[i].mAngleMotor.getDeviceTemp().toString()).getEntry();
-            angleMotorEntries[i][2] = angleMotor.add("Angle Faults", modules[i].mAngleMotor.getFaultField().toString()).withWidget("Graph").getEntry();
-            angleMotorEntries[i][3] = angleMotor.add("Angle Sticky Faults", modules[i].mAngleMotor.getStickyFaultField().toString()).withWidget("Graph").getEntry();
-            angleMotorEntries[i][4] = angleMotor.add("Angle Voltage", modules[i].mAngleMotor.getMotorVoltage().toString()).getEntry();
-            angleMotorEntries[i][5] = angleMotor.add("Angle Current", modules[i].mAngleMotor.getStatorCurrent().toString()).getEntry();
-            angleMotorEntries[i][6] = angleMotor.add("Angle Velocity", modules[i].mAngleMotor.getRotorVelocity().toString()).getEntry();
-            angleMotorEntries[i][7] = angleMotor.add("Angle Torque", modules[i].mAngleMotor.getMotorKT().toString()).getEntry();
+            ShuffleboardLayout angleMotor = tabs[i].getLayout("Angle Motor", BuiltInLayouts.kGrid).withSize(21, 5).withPosition(8, 0);
+
+            angleMotorEntries[i][0] = angleMotor.add("Status", angleStatus)
+                .withPosition(0, 1)
+                .withSize(2, 1)
+                .getEntry();
+            angleMotorEntries[i][1] = angleMotor.add("Temperature", modules[i].mAngleMotor.getDeviceTemp().getValueAsDouble())
+                .withPosition(0, 0)
+                .withSize(2, 1)
+                .getEntry();
+            angleMotorEntries[i][2] = angleMotor.add("Faults", modules[i].mAngleMotor.getFaultField().getValueAsDouble())
+                .withPosition(1, 0)
+                .withSize(1, 1)
+                .getEntry();
+            angleMotorEntries[i][3] = angleMotor.add("Sticky Faults", modules[i].mAngleMotor.getStickyFaultField().getValueAsDouble())
+                .withPosition(1, 1)
+                .withSize(1, 1)
+                .getEntry();
+            angleMotorEntries[i][4] = angleMotor.add("Voltage", modules[i].mAngleMotor.getMotorVoltage().getValueAsDouble())
+                .withPosition(2, 0)
+                .withSize(1, 1)
+                .getEntry();
+            angleMotorEntries[i][5] = angleMotor.add("Current", modules[i].mAngleMotor.getStatorCurrent().getValueAsDouble())
+                .withPosition(2, 1)
+                .withSize(1, 1)
+                .getEntry();
+            angleMotorEntries[i][6] = angleMotor.add("Velocity", modules[i].mAngleMotor.getRotorVelocity().getValueAsDouble())
+                .withPosition(3, 0)
+                .withSize(1, 1)
+                .getEntry();
+            angleMotorEntries[i][7] = angleMotor.add("Torque", modules[i].mAngleMotor.getMotorKT().getValueAsDouble())
+                .withPosition(3, 1)
+                .withSize(1, 1)
+                .getEntry();
 
             /* Drive Motor Information */
-            ShuffleboardLayout driveMotor = tabs[i].getLayout("Drive Motor", BuiltInLayouts.kGrid).withSize(4, 2);
-            driveMotorEntries[i][0] = driveMotor.add("Drive Status", driveStatus).getEntry();
-            driveMotorEntries[i][1] = driveMotor.add("Drive Temperature", modules[i].mDriveMotor.getDeviceTemp().toString()).getEntry();
-            driveMotorEntries[i][2] = driveMotor.add("Drive Faults", modules[i].mDriveMotor.getFaultField().toString()).withWidget("Graph").getEntry();
-            driveMotorEntries[i][3] = driveMotor.add("Drive Sticky Faults", modules[i].mDriveMotor.getStickyFaultField().toString()).withWidget("Graph").getEntry();
-            driveMotorEntries[i][4] = driveMotor.add("Drive Voltage", modules[i].mDriveMotor.getMotorVoltage().toString()).getEntry();
-            driveMotorEntries[i][5] = driveMotor.add("Drive Current", modules[i].mDriveMotor.getStatorCurrent().toString()).getEntry();
-            driveMotorEntries[i][6] = driveMotor.add("Drive Velocity", modules[i].mDriveMotor.getRotorVelocity().toString()).getEntry();
-            driveMotorEntries[i][7] = driveMotor.add("Drive Torque", modules[i].mDriveMotor.getMotorKT().toString()).getEntry();
+            ShuffleboardLayout driveMotor = tabs[i].getLayout("Drive Motor", BuiltInLayouts.kGrid).withSize(21, 5).withPosition(8, 6);
+
+            driveMotorEntries[i][0] = driveMotor.add("Status", driveStatus)
+                .withPosition(0, 1)
+                .getEntry();
+            driveMotorEntries[i][1] = driveMotor.add("Temperature", modules[i].mDriveMotor.getDeviceTemp().getValueAsDouble())
+                .withPosition(0, 0)
+                .getEntry();
+            driveMotorEntries[i][2] = driveMotor.add("Faults", modules[i].mDriveMotor.getFaultField().getValueAsDouble())
+                .withPosition(1, 0)
+                .getEntry();
+            driveMotorEntries[i][3] = driveMotor.add("Sticky Faults", modules[i].mDriveMotor.getStickyFaultField().getValueAsDouble())
+                .withPosition(1, 1)
+                .getEntry();
+            driveMotorEntries[i][4] = driveMotor.add("Voltage", modules[i].mDriveMotor.getMotorVoltage().getValueAsDouble())
+                .withPosition(2, 0)
+                .getEntry();
+            driveMotorEntries[i][5] = driveMotor.add("Current", modules[i].mDriveMotor.getStatorCurrent().getValueAsDouble())
+                .withPosition(2, 1)
+                .getEntry();
+            driveMotorEntries[i][6] = driveMotor.add("Velocity", modules[i].mDriveMotor.getRotorVelocity().getValueAsDouble())
+                .withPosition(3, 0)
+                .getEntry();
+            driveMotorEntries[i][7] = driveMotor.add("Torque", modules[i].mDriveMotor.getMotorKT().getValueAsDouble())
+                .withPosition(3, 1)
+                .getEntry();
         }
     }
 
@@ -85,36 +127,34 @@ public class Dashboard {
         {
             driveStatus = (modules[i].mDriveMotor.isConnected());
             angleStatus = (modules[i].mAngleMotor.isConnected());
-            /*
+            
             for (GenericEntry modulePosition[] : modulePositionEntries) {
-                modulePosition[0].setString(moduleStates[i].angle.toString());
+                modulePosition[0].setDouble(moduleStates[i].angle.getDegrees());
                 modulePosition[1].setBoolean(angleStatus && driveStatus);
             }
-                 */
 
-            /*
+            
             for (GenericEntry angleMotor[] : angleMotorEntries) {
                 angleMotor[0].setBoolean(angleStatus);
-                angleMotor[1].setString(modules[i].mAngleMotor.getDeviceTemp().toString());
-                angleMotor[2].setString(modules[i].mAngleMotor.getFaultField().toString());
-                angleMotor[3].setString(modules[i].mAngleMotor.getStickyFaultField().toString());
-                angleMotor[4].setString(modules[i].mAngleMotor.getMotorVoltage().toString());
-                angleMotor[5].setString(modules[i].mAngleMotor.getStatorCurrent().toString());
-                angleMotor[6].setString(modules[i].mAngleMotor.getRotorVelocity().toString());
-                angleMotor[7].setString(modules[i].mAngleMotor.getMotorKT().toString());
+                angleMotor[1].setDouble(modules[i].mAngleMotor.getDeviceTemp().getValueAsDouble());
+                angleMotor[2].setDouble(modules[i].mAngleMotor.getFaultField().getValueAsDouble());
+                angleMotor[3].setDouble(modules[i].mAngleMotor.getStickyFaultField().getValueAsDouble());
+                angleMotor[4].setDouble(modules[i].mAngleMotor.getMotorVoltage().getValueAsDouble());
+                angleMotor[5].setDouble(modules[i].mAngleMotor.getStatorCurrent().getValueAsDouble());
+                angleMotor[6].setDouble(modules[i].mAngleMotor.getRotorVelocity().getValueAsDouble());
+                angleMotor[7].setDouble(modules[i].mAngleMotor.getMotorKT().getValueAsDouble());
             }
 
             for (GenericEntry driveMotor[] : driveMotorEntries) {
                 driveMotor[0].setBoolean(driveStatus);
-                driveMotor[1].setString(modules[i].mDriveMotor.getDeviceTemp().toString());
-                driveMotor[2].setString(modules[i].mDriveMotor.getFaultField().toString());
-                driveMotor[3].setString(modules[i].mDriveMotor.getStickyFaultField().toString());
-                driveMotor[4].setString(modules[i].mDriveMotor.getMotorVoltage().toString());
-                driveMotor[5].setString(modules[i].mDriveMotor.getStatorCurrent().toString());
-                driveMotor[6].setString(modules[i].mDriveMotor.getRotorVelocity().toString());
-                driveMotor[7].setString(modules[i].mDriveMotor.getMotorKT().toString());
+                driveMotor[1].setDouble(modules[i].mDriveMotor.getDeviceTemp().getValueAsDouble());
+                driveMotor[2].setDouble(modules[i].mDriveMotor.getFaultField().getValueAsDouble());
+                driveMotor[3].setDouble(modules[i].mDriveMotor.getStickyFaultField().getValueAsDouble());
+                driveMotor[4].setDouble(modules[i].mDriveMotor.getMotorVoltage().getValueAsDouble());
+                driveMotor[5].setDouble(modules[i].mDriveMotor.getStatorCurrent().getValueAsDouble());
+                driveMotor[6].setDouble(modules[i].mDriveMotor.getRotorVelocity().getValueAsDouble());
+                driveMotor[7].setDouble(modules[i].mDriveMotor.getMotorKT().getValueAsDouble());
             }
-         */
         }
     }
 }
