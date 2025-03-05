@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 
-import com.ctre.phoenix6.swerve.jni.SwerveJNI.ModulePosition;
-
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+
 import frc.robot.RobotContainer;
-import frc.robot.Constants;
 import frc.robot.SwerveModule;
 
 public class Dashboard {
@@ -29,7 +29,9 @@ public class Dashboard {
 
     private static boolean driveStatus;
     private static boolean angleStatus;
+    private static boolean encoderStatus;
 
+    private static GenericEntry[][] OverviewModulePositionEntries = new GenericEntry[4][2];
     private static GenericEntry[][] modulePositionEntries = new GenericEntry[4][2];
     private static GenericEntry[][] angleMotorEntries = new GenericEntry[4][8];
     private static GenericEntry[][] driveMotorEntries = new GenericEntry[4][8];
@@ -38,21 +40,28 @@ public class Dashboard {
     public Dashboard()
     {
         SwerveModule[] modules = swerve.mSwerveMods;
-        swerveOverview.add(odometryField);
 
+        swerveOverview.add(odometryField).withSize(20, 6).withPosition(9, 0);
+
+        ShuffleboardLayout modulePositions = swerveOverview.getLayout("Module Headings", BuiltInLayouts.kGrid).withSize(9, 11).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2));
+        ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 5).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
         for (int i = 0; i < 4; i++)
         {
             driveStatus = (modules[i].mDriveMotor.isConnected());
             angleStatus = (modules[i].mAngleMotor.isConnected());
+            encoderStatus = (modules[i].getCANcoder() != null);
 
-            /* Module Position Information */
-            ShuffleboardLayout modulePosition = tabs[i].getLayout("Module Position", BuiltInLayouts.kGrid).withSize(8, 11).withPosition(0, 0);
+            /* Module Heading Information */
+            ShuffleboardLayout modulePosition = tabs[i].getLayout("Module Information", BuiltInLayouts.kGrid).withSize(8, 11).withPosition(0, 0).withProperties(Map.of("Number of Columns", 1, "Number of Rows", 2));
 
-            modulePositionEntries[i][0] = modulePosition.add("Heading", moduleStates[i].angle.getDegrees()).withWidget("Gyro").withPosition(1, 0).getEntry();
-            modulePositionEntries[i][1] = modulePosition.add("Module Status", (angleStatus && driveStatus)).withPosition(1, 2).getEntry();
+            OverviewModulePositionEntries[i][0] = modulePositions.add(String.format("Module %s Heading", i + 1), moduleStates[i].angle.getDegrees()).withWidget("Gyro").withPosition((i % 2), (i < 2 ? 0 : 1)).getEntry();
+            OverviewModulePositionEntries[i][1] = moduleVelocities.add(String.format("Module %s Velocity", i + 1), moduleStates[i].speedMetersPerSecond).withWidget("Number Bar").withPosition((i % 2), (i < 2 ? 0 : 1)).getEntry();
+
+            modulePositionEntries[i][0] = modulePosition.add("Heading", moduleStates[i].angle.getDegrees()).withWidget("Gyro").withPosition(0, 0).getEntry();
+            modulePositionEntries[i][1] = modulePosition.add("Module Status", (angleStatus && driveStatus && encoderStatus)).withPosition(0, 1).getEntry();
 
             /* Angle Motor Information */
-            ShuffleboardLayout angleMotor = tabs[i].getLayout("Angle Motor", BuiltInLayouts.kGrid).withSize(21, 5).withPosition(8, 0);
+            ShuffleboardLayout angleMotor = tabs[i].getLayout("Angle Motor", BuiltInLayouts.kGrid).withSize(21, 5).withPosition(8, 0).withProperties(Map.of("Number of Columns", 4, "Number of Rows", 2));
 
             angleMotorEntries[i][0] = angleMotor.add("Status", angleStatus)
                 .withPosition(0, 1)
@@ -88,7 +97,7 @@ public class Dashboard {
                 .getEntry();
 
             /* Drive Motor Information */
-            ShuffleboardLayout driveMotor = tabs[i].getLayout("Drive Motor", BuiltInLayouts.kGrid).withSize(21, 5).withPosition(8, 6);
+            ShuffleboardLayout driveMotor = tabs[i].getLayout("Drive Motor", BuiltInLayouts.kGrid).withSize(21, 5).withPosition(8, 6).withProperties(Map.of("Number of Columns", 4, "Number of Rows", 2));
 
             driveMotorEntries[i][0] = driveMotor.add("Status", driveStatus)
                 .withPosition(0, 1)
@@ -119,7 +128,7 @@ public class Dashboard {
 
     public void update()
     {
-        odometryField.setRobotPose(mRobotContainer.s_Swerve.getPose());
+        // odometryField.setRobotPose(mRobotContainer.s_Swerve.getPose());
 
         SwerveModule[] modules = swerve.mSwerveMods;
 
@@ -127,10 +136,15 @@ public class Dashboard {
         {
             driveStatus = (modules[i].mDriveMotor.isConnected());
             angleStatus = (modules[i].mAngleMotor.isConnected());
+            encoderStatus = (modules[i].getCANcoder() != null);
+            
+
+            OverviewModulePositionEntries[i][0].setDouble(moduleStates[i].angle.getDegrees());
+            OverviewModulePositionEntries[i][1].setDouble(moduleStates[i].speedMetersPerSecond);
             
             for (GenericEntry modulePosition[] : modulePositionEntries) {
                 modulePosition[0].setDouble(moduleStates[i].angle.getDegrees());
-                modulePosition[1].setBoolean(angleStatus && driveStatus);
+                modulePosition[1].setBoolean(angleStatus && driveStatus && encoderStatus);
             }
 
             
