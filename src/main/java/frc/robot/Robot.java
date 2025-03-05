@@ -34,6 +34,7 @@ import frc.robot.subsystems.Dashboard;
 public class Robot extends TimedRobot {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     private Command m_autonomousCommand;
+    private Dashboard dashboard = new Dashboard();
 
     private RobotContainer m_robotContainer;
 
@@ -63,16 +64,13 @@ public class Robot extends TimedRobot {
 
         // (alternatively) Record only DS control data
         DriverStation.startDataLog(DataLogManager.getLog(), false);
-
-        // for climb camera
-
     }
 
     /* Called every robot packet in every mode */
     @Override
     public void robotPeriodic() {
         // update SmartDashboard
-        Dashboard.update();
+        dashboard.update();
 
         // update Command Scheduling (DO NOT REMOVE)
         // WILL break all robot mechanisms, required to listen for commands

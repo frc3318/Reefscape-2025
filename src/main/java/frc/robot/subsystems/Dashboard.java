@@ -31,6 +31,8 @@ public class Dashboard {
         SwerveModuleState[] moduleStates = swerve.getModuleStates();
         SwerveModule[] modules = swerve.mSwerveMods;
 
+        
+
         boolean driveStatus;
         boolean angleStatus;
 
@@ -40,28 +42,28 @@ public class Dashboard {
             driveStatus = (modules[i].mDriveMotor.isConnected());
             angleStatus = (modules[i].mAngleMotor.isConnected());
 
-            tabs[i].add("Gyro", moduleStates[i].angle);
+            tabs[i].add("Heading", moduleStates[i].angle.getMeasure()).withWidget("Gyro");
             tabs[i].add("Module Status", (angleStatus && driveStatus));
 
             /* Angle Motor Information */
             tabs[i].add("Angle Status", angleStatus);
-            tabs[i].add("Angle Temperature", modules[i].mAngleMotor.getDeviceTemp());
-            tabs[i].add("Angle Faults", modules[i].mAngleMotor.getFaultField());
-            tabs[i].add("Angle Sticky Faults", modules[i].mAngleMotor.getStickyFaultField());
-            tabs[i].add("Angle Voltage", modules[i].mAngleMotor.getMotorVoltage());
-            tabs[i].add("Angle Current", modules[i].mAngleMotor.getStatorCurrent());
-            tabs[i].add("Angle Velocity", modules[i].mAngleMotor.getRotorVelocity());
-            tabs[i].add("Angle Torque", modules[i].mAngleMotor.getMotorKT());
+            tabs[i].add("Angle Temperature", modules[i].mAngleMotor.getDeviceTemp().toString());
+            tabs[i].add("Angle Faults", modules[i].mAngleMotor.getFaultField().toString()).withWidget("Graph");
+            tabs[i].add("Angle Sticky Faults", modules[i].mAngleMotor.getStickyFaultField().toString()).withWidget("Graph");
+            tabs[i].add("Angle Voltage", modules[i].mAngleMotor.getMotorVoltage().toString());
+            tabs[i].add("Angle Current", modules[i].mAngleMotor.getStatorCurrent().toString());
+            tabs[i].add("Angle Velocity", modules[i].mAngleMotor.getRotorVelocity().toString());
+            tabs[i].add("Angle Torque", modules[i].mAngleMotor.getMotorKT().toString());
 
             /* Drive Motor Information */
             tabs[i].add("Drive Status", driveStatus);
-            tabs[i].add("Drive Temperature", modules[i].mDriveMotor.getDeviceTemp());
-            tabs[i].add("Drive Faults", modules[i].mDriveMotor.getFaultField());
-            tabs[i].add("Drive Sticky Faults", modules[i].mDriveMotor.getStickyFaultField());
-            tabs[i].add("Drive Voltage", modules[i].mDriveMotor.getMotorVoltage());
-            tabs[i].add("Drive Current", modules[i].mDriveMotor.getStatorCurrent());
-            tabs[i].add("Drive Velocity", modules[i].mDriveMotor.getRotorVelocity());
-            tabs[i].add("Drive Torque", modules[i].mDriveMotor.getMotorKT());
+            tabs[i].add("Drive Temperature", modules[i].mDriveMotor.getDeviceTemp().toString());
+            tabs[i].add("Drive Faults", modules[i].mDriveMotor.getFaultField().toString()).withWidget("Graph");
+            tabs[i].add("Drive Sticky Faults", modules[i].mDriveMotor.getStickyFaultField().toString()).withWidget("Graph");
+            tabs[i].add("Drive Voltage", modules[i].mDriveMotor.getMotorVoltage().toString());
+            tabs[i].add("Drive Current", modules[i].mDriveMotor.getStatorCurrent().toString());
+            tabs[i].add("Drive Velocity", modules[i].mDriveMotor.getRotorVelocity().toString());
+            tabs[i].add("Drive Torque", modules[i].mDriveMotor.getMotorKT().toString());
         }
     }
 }
