@@ -40,8 +40,16 @@ public class Dashboard {
     public Dashboard()
     {
         SwerveModule[] modules = swerve.mSwerveMods;
+        SwerveData swerveData = new SwerveData();
+
+        swerveData.setModuleLocations(swerve.getModulePositions());
+        swerveData.setModuleSpeeds(swerve.getSpeeds().omegaRadiansPerSecond);
+        swerveData.setHeading(swerve.getHeading());
+        swerveData.setXVelocity(swerve.getSpeeds().vxMetersPerSecond);
+        swerveData.setYVelocity(swerve.getSpeeds().vyMetersPerSecond);
 
         swerveOverview.add(odometryField).withSize(20, 6).withPosition(9, 0);
+        swerveOverview.add("Swerve", swerveData).withWidget("SwerveDrive").withPosition(16, 5);
 
         ShuffleboardLayout modulePositions = swerveOverview.getLayout("Module Headings", BuiltInLayouts.kGrid).withSize(9, 11).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2));
         ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 5).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
