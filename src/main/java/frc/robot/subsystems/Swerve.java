@@ -60,8 +60,8 @@ public class Swerve extends SubsystemBase {
             this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD), // Translation PID constants
-                    new PIDConstants(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD) // Rotation PID constants
+                    new PIDConstants(5, 0, 0), // Translation PID constants
+                    new PIDConstants(4, 0, 0) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
@@ -121,7 +121,7 @@ public class Swerve extends SubsystemBase {
                         : new ChassisSpeeds(
                                 translation.getX(),
                                 translation.getY(),
-                                rotation));
+                                -rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {
@@ -177,7 +177,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(-gyro.getAngle() - gyroOffset);
+        return Rotation2d.fromDegrees(gyro.getAngle());
     }
 
     public void resetModulesToAbsolute() {

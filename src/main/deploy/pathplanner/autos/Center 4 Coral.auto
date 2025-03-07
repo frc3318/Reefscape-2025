@@ -11,15 +11,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Center P2"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.8
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center P2"
           }
         },
         {

@@ -81,7 +81,6 @@ public class RobotContainer {
   /* Motor Controller */
   private final SparkMax ExtakeMotor = new SparkMax(9, MotorType.kBrushless);
   private final SparkMax ClimbMotor = new SparkMax(21, MotorType.kBrushless);
-  private final SparkMax Arm = new SparkMax(10, MotorType.kBrushed);
 
   /* Subsystems */
   public final Swerve s_Swerve = new Swerve();
@@ -129,12 +128,6 @@ public class RobotContainer {
 
     ClimberDown.onTrue(new InstantCommand(() -> ClimbMotor.set(-.5)));
     ClimberDown.onFalse(new InstantCommand(() -> ClimbMotor.set(0)));
-
-    ArmOut.onTrue(new InstantCommand(() -> Arm.set(-1)));
-    ArmOut.onFalse(new InstantCommand(() -> Arm.set(0)));
-
-    ArmIn.onTrue(new InstantCommand(() -> Arm.set(.5)));
-    ArmIn.onFalse(new InstantCommand(() -> Arm.set(0)));
   }
 
   public static RobotContainer getInstance() {
