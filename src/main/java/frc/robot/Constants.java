@@ -1,5 +1,8 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -9,6 +12,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.LEDPattern.GradientType;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -173,5 +180,20 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
         public static final double maxRPMNeo550 = 11000;
         public static final double maxRPMNeo = 5676;
         public static final double maxRPMVortex = 6780;
+    }
+
+    public static final class LEDs {
+         /* LED arrangement */
+        public static final int startIdx = 8;
+        public static final int numLEDs = 86;
+        public static final int totalLEDs = startIdx + numLEDs;
+        /* Animations */
+        private static final Distance kLedSpacing = Meters.of(1 / 61.51);
+        public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kWhite, Color.kAliceBlue);
+        public static final LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
+        /* Misc */
+        public static final double blinkRate = 0.2; // Regular blink rate
+        public static final double errorBlinkRate = 0.1; // Blink rate for errors and warnings
+        public static final double tempStateTime = 0.70; // How long for warnings and errors
     }
 }
