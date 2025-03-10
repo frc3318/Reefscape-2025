@@ -18,9 +18,7 @@ import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.util.COTSTalonFXSwerveConstants.SDS.MK4i;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.SwerveModule;
 
 public class Swerve extends SubsystemBase {
@@ -28,7 +26,6 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     private AnalogOutput hourGlAnalog = new AnalogOutput(0);
-    private double gyroOffset = 0.0;
     public boolean invert = false;
     private double isSlow = 1;
 
@@ -60,8 +57,8 @@ public class Swerve extends SubsystemBase {
             this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(5, 0, 0), // Translation PID constants
-                    new PIDConstants(2, 0, 0) // Rotation PID constants
+                    new PIDConstants(Constants.AutoConstants.driveKP, Constants.AutoConstants.driveKI, Constants.AutoConstants.driveKD), // Translation PID constants
+                    new PIDConstants(Constants.AutoConstants.angleKP, Constants.AutoConstants.angleKI, Constants.AutoConstants.angleKD) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
@@ -76,8 +73,8 @@ public class Swerve extends SubsystemBase {
               return false;
             },
             this // Reference to this subsystem to set requirements
-    );
-        }
+        );
+    }
 
 
         // configure auto build
@@ -189,17 +186,6 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
-
-        for (SwerveModule mod : mSwerveMods) {
-            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder",
-            // mod.getCANcoder().getDegrees());
-            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle",
-            // mod.getPosition().angle.getDegrees());
-            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
-            // mod.getState().speedMetersPerSecond);
-        }
-        // SmartDashboard.putData(gyro);
-
     }
 
     public void resetOdometry(Pose2d pose) {

@@ -17,22 +17,39 @@ public class Dashboard {
     private static Swerve swerve = mRobotContainer.s_Swerve;;
     private static Field2d odometryField = new Field2d();
 
+    /* Create dashboard tabs for each Swerve module */
     private static ShuffleboardTab frontLeft = Shuffleboard.getTab("Front Left");
     private static ShuffleboardTab frontRight = Shuffleboard.getTab("Front Right");
     private static ShuffleboardTab rearLeft = Shuffleboard.getTab("Rear Left");
     private static ShuffleboardTab rearRight = Shuffleboard.getTab("Rear Right");
 
+    /* Put these tabs into an array to be looped and populated */
     private static ShuffleboardTab[] tabs = {frontLeft, frontRight, rearLeft, rearRight};
     private static ShuffleboardTab swerveOverview = Shuffleboard.getTab("Swerve Overview");
 
+    /* Array for Module States */
     private static SwerveModuleState[] moduleStates = swerve.getModuleStates();
 
+    /* Temporary variables to store status for each module part */
     private static boolean driveStatus;
     private static boolean angleStatus;
     private static boolean encoderStatus;
 
+    /* Stores the value to be updated for each tab, first index is which module to access (0-3), second index is the index of the information type to access */
+    /* For these two, [0] for the second index stores the heading of the module, and [1] stores the velocity of the module */
     private static GenericEntry[][] OverviewModulePositionEntries = new GenericEntry[4][2];
     private static GenericEntry[][] modulePositionEntries = new GenericEntry[4][2];
+
+    /* List of all indexes and their information stored
+     * [0] = boolean Status
+     * [1] = double Motor Temperature
+     * [2] = double Fault Count
+     * [3] = double Sticky Fault Count
+     * [4] = double Voltage
+     * [5] = double Current
+     * [6] = double Velocity
+     * [7] = double Torque
+     */
     private static GenericEntry[][] angleMotorEntries = new GenericEntry[4][8];
     private static GenericEntry[][] driveMotorEntries = new GenericEntry[4][8];
 
@@ -42,17 +59,20 @@ public class Dashboard {
         SwerveModule[] modules = swerve.mSwerveMods;
         SwerveData swerveData = new SwerveData();
 
+        /* Initialize swerve module visualization data */
         swerveData.setModuleLocations(swerve.getModulePositions());
         swerveData.setModuleSpeeds(swerve.getSpeeds().omegaRadiansPerSecond);
         swerveData.setHeading(swerve.getHeading());
         swerveData.setXVelocity(swerve.getSpeeds().vxMetersPerSecond);
         swerveData.setYVelocity(swerve.getSpeeds().vyMetersPerSecond);
 
+        /* Adds field element to overview tab */
         swerveOverview.add(odometryField).withSize(20, 6).withPosition(9, 0);
         swerveOverview.add("Swerve", swerveData).withWidget("SwerveDrive").withPosition(16, 5);
 
         ShuffleboardLayout modulePositions = swerveOverview.getLayout("Module Headings", BuiltInLayouts.kGrid).withSize(9, 11).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2));
         ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 5).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
+        
         for (int i = 0; i < 4; i++)
         {
             driveStatus = (modules[i].mDriveMotor.isConnected());
@@ -136,7 +156,7 @@ public class Dashboard {
 
     public void update()
     {
-        // odometryField.setRobotPose(mRobotContainer.s_Swerve.getPose());
+        odometryField.setRobotPose(mRobotContainer.s_Swerve.getPose());
 
         SwerveModule[] modules = swerve.mSwerveMods;
 
@@ -155,7 +175,7 @@ public class Dashboard {
                 modulePosition[1].setBoolean(angleStatus && driveStatus && encoderStatus);
             }
 
-            
+            /* Update all angle motor entry information */
             for (GenericEntry angleMotor[] : angleMotorEntries) {
                 angleMotor[0].setBoolean(angleStatus);
                 angleMotor[1].setDouble(modules[i].mAngleMotor.getDeviceTemp().getValueAsDouble());
@@ -167,6 +187,7 @@ public class Dashboard {
                 angleMotor[7].setDouble(modules[i].mAngleMotor.getMotorKT().getValueAsDouble());
             }
 
+            /* Update all drive motor entry information */
             for (GenericEntry driveMotor[] : driveMotorEntries) {
                 driveMotor[0].setBoolean(driveStatus);
                 driveMotor[1].setDouble(modules[i].mDriveMotor.getDeviceTemp().getValueAsDouble());

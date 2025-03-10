@@ -19,6 +19,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static LEDState state = LEDState.STARTUP;
     private static boolean blinkOff = false;
 
+    /* Initialize all colors, this allows easy custom color creation */
     private enum robotColor {
         off(0, 0, 0),
         red(255, 0, 0),
@@ -31,7 +32,7 @@ public class LEDSubsystem extends SubsystemBase {
         yellow(255, 255, 0),
         white(255, 255, 255),
         dim(50, 50, 50),
-        lynk(255, 64, 0),
+        gsmst(6, 63, 142),
         disabled(200, 0, 0);
 
         public final int r, g, b;
@@ -65,7 +66,7 @@ public class LEDSubsystem extends SubsystemBase {
     public static enum LEDState {
         STARTUP(new LEDConfig(Constants.LEDs.ScrollingGradient)),
         DISABLED(new LEDConfig(robotColor.disabled)),
-        NORMAL(new LEDConfig(robotColor.lynk)),
+        NORMAL(new LEDConfig(robotColor.gsmst)),
         INTAKE(new LEDConfig(robotColor.green)),
         EXTAKE(new LEDConfig(robotColor.green, true)),
         ERROR(new LEDConfig(robotColor.red, true)),
@@ -103,6 +104,11 @@ public class LEDSubsystem extends SubsystemBase {
 
     private static void setColor(robotColor color) {
         setColor(color, Constants.LEDs.numLEDs);
+    }
+
+    private static void setColor(LEDPattern pattern) {
+        pattern.applyTo(m_ledBuffer);
+        m_led.setData(m_ledBuffer);
     }
 
     public static void triggerError() {
@@ -146,20 +152,10 @@ public class LEDSubsystem extends SubsystemBase {
             switch (state)
             {
                 case STARTUP:
-                    
+                    setColor(state.config.animation);
                     break;
-                case DISABLED:
-                    break;
-                case NORMAL:
-                    break;
-                case INTAKE:
-                    break;
-                case EXTAKE:
-                    break;
-                case ERROR:
-                    break;
-                case WARNING:
-                    break;
+                default:
+                    setColor(state.config.color);
             }
 
             if (state.config.blink) {

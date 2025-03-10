@@ -35,8 +35,7 @@ public final class Constants {
         public static final double wheelBase = Units.inchesToMeters(22.5); 
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
-        /* Swerve Kinematics 
-         * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
+        /* Swerve Kinematics */
          public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
             new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
             new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
@@ -82,13 +81,13 @@ public final class Constants {
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = .19844; // 0.14368; 0.18978; 
-        public static final double driveKV = 2.2097; // 2.2609; 2.8428;
-        public static final double driveKA = .46947; // 0.23108; 0.068797;
+        public static final double driveKS = .19844;
+        public static final double driveKV = 2.2097;
+        public static final double driveKA = .46947;
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 5; //TODO: This must be tuned to specific robot ???
+        public static final double maxSpeed = 4.78;
         /** Radians per Second */
         public static final double maxAngularVelocity = 5;
 
@@ -148,13 +147,6 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angleOffset);
         }
-        //      public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-        //   new PIDConstants(5.0, 0, 0), // Translation constants 
-        //   new PIDConstants(5.0, 0, 0), // Rotation constants 
-        //   maxSpeed,
-        //   Units.inchesToMeters(35/2), //flModuleOffset.getNorm(), // Drive base radius (distance from center to furthest module) 
-        //   new ReplanningConfig()
-        // ); commented out bc it's in swerve subsystem, can be changed to stay here
     }
 
     public static final class AutoConstants {
@@ -164,7 +156,17 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
         public static final double kMass = 38.5;
         public static final double kMOI = 4.367;
-        
+
+        /* Auton Angle Motor PID Values */
+        public static final double angleKP = 2.0;
+        public static final double angleKI = 0.0;
+        public static final double angleKD = 0.0;
+
+        /* Drive Motor PID Values */
+        public static final double driveKP = 5.0;
+        public static final double driveKI = 0.0;
+        public static final double driveKD = 0.05;
+        public static final double driveKF = 0.0;
     
         public static final double kPXController = 1;
         public static final double kPYController = 1;
