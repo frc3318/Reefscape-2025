@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Dashboard;
+import frc.robot.subsystems.LEDSubsystem;
 
 public class Robot extends TimedRobot {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     private Command m_autonomousCommand;
-    private Dashboard dashboard = new Dashboard();
+    // private Dashboard dashboard = new Dashboard();
+    // private LEDSubsystem ledSubsystem = new LEDSubsystem();
 
     private RobotContainer m_robotContainer;
 
@@ -41,7 +43,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         // update SmartDashboard
-        dashboard.update();
+        // dashboard.update();
 
         // update Command Scheduling (DO NOT REMOVE)
         // WILL break all robot mechanisms, required to listen for commands

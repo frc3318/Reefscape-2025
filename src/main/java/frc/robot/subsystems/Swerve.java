@@ -97,6 +97,10 @@ public class Swerve extends SubsystemBase {
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         fieldRelative = true; // TODO : Override
+
+        if(Math.abs(rotation) < 0.01) {
+            rotation = 0;
+        }
         if (translation.getX() == 0 &&
                 translation.getY() == 0 &&
                 rotation == 0) {
@@ -113,12 +117,13 @@ public class Swerve extends SubsystemBase {
                         // translation.getY() * isSlow,
                         invert ? translation.getX() * -1 * isSlow : translation.getX() * isSlow,
                         invert ? translation.getY() * -1 * isSlow : translation.getY() * isSlow,
+                        //could change isSlow  specifically for rotation. Try 0.6
                         rotation * isSlow,
                         getHeading())
                         : new ChassisSpeeds(
                                 translation.getX(),
                                 translation.getY(),
-                                -rotation));
+                                rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {

@@ -87,6 +87,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
+        //was 4.78
         public static final double maxSpeed = 4.78;
         /** Radians per Second */
         public static final double maxAngularVelocity = 5;
@@ -163,7 +164,7 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
         public static final double angleKD = 0.0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 5.0;
+        public static final double driveKP = 5;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.05;
         public static final double driveKF = 0.0;
@@ -186,12 +187,12 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
 
     public static final class LEDs {
          /* LED arrangement */
-        public static final int startIdx = 8;
-        public static final int numLEDs = 86;
+        public static final int startIdx = 0;
+        public static final int numLEDs = 43;
         public static final int totalLEDs = startIdx + numLEDs;
         /* Animations */
         private static final Distance kLedSpacing = Meters.of(1 / 61.51);
-        public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kWhite, Color.kAliceBlue);
+        public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kWhite, Color.kDarkBlue);
         public static final LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
         /* Misc */
         public static final double blinkRate = 0.2; // Regular blink rate

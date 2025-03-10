@@ -86,6 +86,9 @@ public class LEDSubsystem extends SubsystemBase {
         m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.numLEDs);
         m_led.setLength(m_ledBuffer.getLength());
 
+        LEDPattern pattern = Constants.LEDs.ScrollingGradient;
+        pattern.applyTo(m_ledBuffer);
+
         // Set the data
         m_led.setData(m_ledBuffer);
         m_led.start();
@@ -122,6 +125,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
 
+     
     @Override
     public void periodic() {
         // set Last State
