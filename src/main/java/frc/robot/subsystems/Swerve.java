@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.function.Consumer;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -17,7 +19,9 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.SwerveModule;
 
@@ -28,6 +32,8 @@ public class Swerve extends SubsystemBase {
     private AnalogOutput hourGlAnalog = new AnalogOutput(0);
     public boolean invert = false;
     private double isSlow = 1;
+
+    // private final SysIdRoutine sysIdRoutine;
 
     public Swerve() {
 
@@ -40,7 +46,8 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
 
-    
+    // sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
+
     //Pathplanner stuff
     RobotConfig config = null;
     try{
@@ -76,6 +83,33 @@ public class Swerve extends SubsystemBase {
         );
     }
 
+    /*
+    private void voltageDrive(double volts) {
+        for (SwerveModule mod : mSwerveMods) {
+            mod.set
+        }
+    }
+        
+
+    private void logMotors(Consumer<Double> log) {
+        for (SwerveModule mod : mSwerveMods) {
+            log.accept(mod.getVoltage());  // Log voltage
+            log.accept(mod.getPosition()); // Log position
+            log.accept(mod.getVelocity()); // Log velocity
+        }
+    }
+    */
+
+    /*
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+    }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.dynamic(direction);
+    }
+    */
+
 
         // configure auto build
     
@@ -101,6 +135,7 @@ public class Swerve extends SubsystemBase {
         if(Math.abs(rotation) < 0.01) {
             rotation = 0;
         }
+
         if (translation.getX() == 0 &&
                 translation.getY() == 0 &&
                 rotation == 0) {
@@ -119,7 +154,7 @@ public class Swerve extends SubsystemBase {
                         invert ? translation.getY() * -1 * isSlow : translation.getY() * isSlow,
                         //could change isSlow  specifically for rotation. Try 0.6
                         rotation * isSlow,
-                        getHeading())
+                        getGyroYaw())
                         : new ChassisSpeeds(
                                 translation.getX(),
                                 translation.getY(),
@@ -179,7 +214,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getAngle());
+        return Rotation2d.fromDegrees(-gyro.getAngle());
     }
 
     public void resetModulesToAbsolute() {

@@ -90,9 +90,8 @@ public final class Constants {
         //was 4.78
         public static final double maxSpeed = 4.78;
         /** Radians per Second */
-        public static final double maxAngularVelocity = 5;
+        public static final double maxAngularVelocity = Rotation2d.fromDegrees(400).getRadians();
 
-        /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
         public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
@@ -151,23 +150,22 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+        public static final double kMaxSpeedMetersPerSecond = 4.78;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 5;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Rotation2d.fromDegrees(400).getRadians();
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Rotation2d.fromDegrees(720).getRadians();
         public static final double kMass = 38.5;
         public static final double kMOI = 4.367;
 
         /* Auton Angle Motor PID Values */
-        public static final double angleKP = 2.0;
+        public static final double angleKP = 1;
         public static final double angleKI = 0.0;
         public static final double angleKD = 0.0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 5;
+        public static final double driveKP = 5.5;
         public static final double driveKI = 0.0;
-        public static final double driveKD = 0.05;
-        public static final double driveKF = 0.0;
+        public static final double driveKD = 0.2;
     
         public static final double kPXController = 1;
         public static final double kPYController = 1;
