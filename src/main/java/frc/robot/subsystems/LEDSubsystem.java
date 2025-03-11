@@ -7,12 +7,16 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class LEDSubsystem extends SubsystemBase {
     private static final Timer tempStateTimer = new Timer();
     private static final Timer blinkTimer = new Timer();
+    private static final RobotContainer robotContainer = RobotContainer.getInstance();
+    private double lastExtakePosition = 0;
 
     private static AddressableLED m_led;
     private static AddressableLEDBuffer m_ledBuffer;
@@ -67,8 +71,8 @@ public class LEDSubsystem extends SubsystemBase {
         STARTUP(new LEDConfig(Constants.LEDs.ScrollingGradient)),
         DISABLED(new LEDConfig(robotColor.disabled)),
         NORMAL(new LEDConfig(robotColor.gsmst)),
-        INTAKE(new LEDConfig(robotColor.green)),
-        EXTAKE(new LEDConfig(robotColor.green, true)),
+        INTAKE(new LEDConfig(robotColor.green, true)),
+        EXTAKE(new LEDConfig(robotColor.magenta)),
         ERROR(new LEDConfig(robotColor.red, true)),
         WARNING(new LEDConfig(robotColor.yellow, true));
 
@@ -81,7 +85,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     public LEDSubsystem()
     {
-        m_led = new AddressableLED(9);
+        m_led = new AddressableLED(0);
 
         m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.numLEDs);
         m_led.setLength(m_ledBuffer.getLength());
@@ -140,15 +144,30 @@ public class LEDSubsystem extends SubsystemBase {
             if (tempStateTimer.isRunning() && tempStateTimer.hasElapsed(Constants.LEDs.tempStateTime)) {
                 tempStateTimer.stop();
             }
+            boolean extakeTrigger = (robotContainer.lowShooter.getAsBoolean() || robotContainer.highShooter.getAsBoolean() || robotContainer.intakeReset.getAsBoolean());
+            if (extakeTrigger)
+            {
+                state = LEDState.EXTAKE;
+                tempStateTimer.restart();
+            } else if (robotContainer.ExtakeMotor.getEncoder().getPosition() != lastExtakePosition)
+                {
+                    if (!tempStateTimer.isRunning() && !extakeTrigger)
+                    {
+                        if (state != LEDState.INTAKE)
+                        {
+                            state = LEDState.INTAKE;
+                            tempStateTimer.restart();
+                        }
+                    }
+                }
+
+
             // Compute the proper state if's not temporarily overridden
             if (!tempStateTimer.isRunning()) {
-                // TODO: implement logic for if robot intaking
-                if (true) {
-                    state = LEDState.INTAKE;
-                } else {
-                    state = LEDState.NORMAL;
-                }        
+                state = LEDState.NORMAL;
             }
+
+            lastExtakePosition = robotContainer.ExtakeMotor.getEncoder().getPosition();
         }
 
         // Change the LEDs if the state has changed

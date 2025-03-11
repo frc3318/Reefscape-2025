@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Mechanism;
 public class Robot extends TimedRobot {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     private Command m_autonomousCommand;
-    // private Dashboard dashboard = new Dashboard();
-    // private LEDSubsystem ledSubsystem = new LEDSubsystem();
+    private Dashboard dashboard = new Dashboard();
+    private LEDSubsystem ledSubsystem = new LEDSubsystem();
 
     private RobotContainer m_robotContainer;
 

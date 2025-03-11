@@ -2,6 +2,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -13,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Frequency;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
@@ -75,15 +78,15 @@ public final class Constants {
         public static final double angleKD = chosenModule.angleKD;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.1;
+        public static final double driveKP = 0.28563;
         public static final double driveKI = 0.0;
-        public static final double driveKD = 0.05;
+        public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = .19844;
-        public static final double driveKV = 2.2097;
-        public static final double driveKA = .46947;
+        public static final double driveKS = .14252;
+        public static final double driveKV = .72019;
+        public static final double driveKA = .040426;
 
         /* Swerve Profiling Values */
         /** Meters per Second */
@@ -154,18 +157,18 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
         public static final double kMaxAccelerationMetersPerSecondSquared = 5;
         public static final double kMaxAngularSpeedRadiansPerSecond = Rotation2d.fromDegrees(400).getRadians();
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Rotation2d.fromDegrees(720).getRadians();
-        public static final double kMass = 38.5;
+        public static final double kMass = 37.6;
         public static final double kMOI = 4.367;
 
         /* Auton Angle Motor PID Values */
-        public static final double angleKP = 1;
-        public static final double angleKI = 0.0;
-        public static final double angleKD = 0.0;
+        public static final double angleKP = Swerve.angleKP;
+        public static final double angleKI = Swerve.angleKI;
+        public static final double angleKD = Swerve.angleKD;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 5.5;
+        public static final double driveKP = 0.28563;
         public static final double driveKI = 0.0;
-        public static final double driveKD = 0.2;
+        public static final double driveKD = 0.0;
     
         public static final double kPXController = 1;
         public static final double kPYController = 1;
@@ -186,15 +189,17 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
     public static final class LEDs {
          /* LED arrangement */
         public static final int startIdx = 0;
-        public static final int numLEDs = 43;
+        public static final int numLEDs = 86;
         public static final int totalLEDs = startIdx + numLEDs;
         /* Animations */
-        private static final Distance kLedSpacing = Meters.of(1 / 61.51);
-        public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kWhite, Color.kDarkBlue);
-        public static final LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
+        private static final Distance kLedSpacing = Meters.of(1 / 60);
+        public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kBlack, Color.kDarkGreen);
+        // public static final LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
+        public static final LEDPattern ScrollingGradient = GSMSTGradient.scrollAtRelativeSpeed(Percent.per(Second).of(100));
+
         /* Misc */
-        public static final double blinkRate = 0.2; // Regular blink rate
+        public static final double blinkRate = 0.1; // Regular blink rate
         public static final double errorBlinkRate = 0.1; // Blink rate for errors and warnings
-        public static final double tempStateTime = 0.70; // How long for warnings and errors
+        public static final double tempStateTime = 0.7; // How long for warnings and errors
     }
 }

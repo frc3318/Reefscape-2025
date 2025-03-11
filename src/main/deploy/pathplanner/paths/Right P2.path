@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.0820936919138013,
-        "y": 1.0582470521566791
+        "x": 0.94575,
+        "y": 0.35899999999999976
       },
       "prevControl": {
-        "x": 2.7891518373842583,
-        "y": 1.0267476851851847
+        "x": 2.652808145470457,
+        "y": 0.3275006330285053
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Right Coral",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 120.10579178015197
+    "rotation": 30.105999999999995
   },
   "useDefaultConstraints": true
 }
