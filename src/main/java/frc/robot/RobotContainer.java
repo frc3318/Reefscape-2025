@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import dev.doglog.DogLog;
 import dev.doglog.DogLogOptions;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
 
@@ -23,7 +26,7 @@ public class RobotContainer {
 	public boolean extakeTrigger = false;
 
 	/* Controllers */
-	private final CommandXboxController driver = new CommandXboxController(0);
+	public final CommandXboxController driver = new CommandXboxController(0);
 
 	/* Drive Controls */
 	private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -89,15 +92,19 @@ public class RobotContainer {
 
     intakeReset.onTrue(new InstantCommand(() -> ExtakeMotor.set(2)));
     intakeReset.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
+
+	new WaitCommand(115).andThen(new RunCommand(() -> rumble())).schedule();
   }
 
   	public static RobotContainer getInstance() {
     	return m_robotContainer;
   	}
 
-
-
   	public Command getAutonomousCommand() {
     	return autoChooser.getSelected();
   	}
+
+	public void rumble() {
+		driver.setRumble(RumbleType.kBothRumble, 1.0);
+	}
 }
