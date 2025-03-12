@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
-import java.util.function.Consumer;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,9 +19,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.SwerveModule;
 
@@ -81,38 +79,18 @@ public class Swerve extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
         );
+
+        PathPlannerLogging.setLogTargetPoseCallback((targetPose) -> {
+            DogLog.log("Pose/Auto Target Pose", targetPose);
+        });
+        PathPlannerLogging.setLogActivePathCallback((activePath) -> {
+            DogLog.log("Pose/Active Path", activePath.toArray(Pose2d[]::new)); //we have to convert the List of poses PathPlanner gives us to an array because DogLog does not support list, fourtunetely aScope doesn't care whether its a list or an array
+        });
+        PathPlannerLogging.setLogCurrentPoseCallback((currentPose) -> {
+            DogLog.log("Pose/PP Current Pose", currentPose);
+        });
     }
 
-    /*
-    private void voltageDrive(double volts) {
-        for (SwerveModule mod : mSwerveMods) {
-            mod.set
-        }
-    }
-        
-
-    private void logMotors(Consumer<Double> log) {
-        for (SwerveModule mod : mSwerveMods) {
-            log.accept(mod.getVoltage());  // Log voltage
-            log.accept(mod.getPosition()); // Log position
-            log.accept(mod.getVelocity()); // Log velocity
-        }
-    }
-    */
-
-    /*
-    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        return sysIdRoutine.quasistatic(direction);
-    }
-
-    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        return sysIdRoutine.dynamic(direction);
-    }
-    */
-
-
-        // configure auto build
-    
     boolean isAllianceFlip() {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
@@ -143,9 +121,6 @@ public class Swerve extends SubsystemBase {
         } else {
             startMonitoring();
         }
-       // if (isAllianceFlip() == true) invert = true;
-       // else invert = false;
-      // invert=false;
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
                         // translation.getX() * isSlow,
@@ -197,6 +172,7 @@ public class Swerve extends SubsystemBase {
 
     public void setPose(Pose2d pose) {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
+        DogLog.log("Pose/Status/Setting Pose", pose);
     }
 
     public Rotation2d getHeading() {
@@ -211,6 +187,7 @@ public class Swerve extends SubsystemBase {
     public void zeroHeading() {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), new Rotation2d()));
+        DogLog.log("Pose/Gyro/Status", "Zeroed Gyro Heading");
     }
 
     public Rotation2d getGyroYaw() {
@@ -226,6 +203,15 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
+
+        DogLog.log("Pose/Pose", getPose());
+        DogLog.log("Pose/Gyro/Heading", getHeading().getDegrees());
+        DogLog.log("Pose/Gyro/Raw Yaw", getGyroYaw());
+
+        for(SwerveModule mod : mSwerveMods) {
+            DogLog.log("Swerve/Mod/" + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
+        }
+        DogLog.log("Swerve/Actual Module States", getModuleStates());
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -241,6 +227,8 @@ public class Swerve extends SubsystemBase {
 
         SwerveModuleState[] targetStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(targetSpeeds);
         setModuleStates(targetStates);
+
+        DogLog.log("Swerve/Desired Module States", targetStates);
     }
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
@@ -257,5 +245,7 @@ public class Swerve extends SubsystemBase {
 
     public void stop() {
         driveRobotRelative(new ChassisSpeeds());
+
+        DogLog.log("Swerve/Status", "Stopped Swerve");
     }
 }

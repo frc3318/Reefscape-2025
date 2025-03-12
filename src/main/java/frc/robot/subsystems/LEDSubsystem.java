@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import dev.doglog.DogLog;
+
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -26,6 +28,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static AddressableLEDBufferView m_leftData = m_ledBuffer.createView(0, 43);
     private static AddressableLEDBufferView m_rightData = m_ledBuffer.createView(44, 86).reversed();
     private static LEDState state = LEDState.STARTUP;
+    private static LEDState lastState;
     private static boolean blinkOff = false;
 
     public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, new Color(186, 185, 190), new Color(160, 0, 222));
@@ -138,8 +141,6 @@ public class LEDSubsystem extends SubsystemBase {
      
     @Override
     public void periodic() {
-        // set Last State
-        LEDState lastState = state;
         // Determine the proper LED state
         if (DriverStation.isDisabled()) {
             if (state != LEDState.STARTUP && state != LEDState.DISABLED) {
@@ -199,5 +200,8 @@ public class LEDSubsystem extends SubsystemBase {
             blinkOff = !blinkOff;
             setColor(blinkOff ? robotColor.off : state.config.color);
         }
+
+        DogLog.log("LED/State", state.toString());
+        lastState = state;
     }
 }
