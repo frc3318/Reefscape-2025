@@ -5,8 +5,14 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
+
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants;
@@ -22,6 +28,9 @@ public class LEDSubsystem extends SubsystemBase {
     private static AddressableLEDBuffer m_ledBuffer;
     private static LEDState state = LEDState.STARTUP;
     private static boolean blinkOff = false;
+
+    public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kBlack, Color.kDarkGreen);
+    public static LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Constants.LEDs.kLedSpacing);
 
     /* Initialize all colors, this allows easy custom color creation */
     private enum robotColor {
@@ -68,7 +77,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public static enum LEDState {
-        STARTUP(new LEDConfig(Constants.LEDs.ScrollingGradient)),
+        STARTUP(new LEDConfig(ScrollingGradient)),
         DISABLED(new LEDConfig(robotColor.disabled)),
         NORMAL(new LEDConfig(robotColor.gsmst)),
         INTAKE(new LEDConfig(robotColor.green, true)),
@@ -90,7 +99,7 @@ public class LEDSubsystem extends SubsystemBase {
         m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.numLEDs);
         m_led.setLength(m_ledBuffer.getLength());
 
-        LEDPattern pattern = Constants.LEDs.ScrollingGradient;
+        LEDPattern pattern = ScrollingGradient;
         pattern.applyTo(m_ledBuffer);
 
         // Set the data

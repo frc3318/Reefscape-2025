@@ -1,9 +1,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Second;
+
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -15,10 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Frequency;
-import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.LEDPattern.GradientType;
-import edu.wpi.first.wpilibj.util.Color;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -191,15 +185,11 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
         public static final int startIdx = 0;
         public static final int numLEDs = 86;
         public static final int totalLEDs = startIdx + numLEDs;
-        /* Animations */
-        private static final Distance kLedSpacing = Meters.of(1 / 60);
-        public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kBlack, Color.kDarkGreen);
-        // public static final LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
-        public static final LEDPattern ScrollingGradient = GSMSTGradient.scrollAtRelativeSpeed(Percent.per(Second).of(100));
+        public static final Distance kLedSpacing = Meters.of(1 / 60);
 
         /* Misc */
         public static final double blinkRate = 0.1; // Regular blink rate
-        public static final double errorBlinkRate = 0.1; // Blink rate for errors and warnings
+        public static final double errorBlinkRate = 0.05; // Blink rate for errors and warnings
         public static final double tempStateTime = 0.7; // How long for warnings and errors
     }
 }
