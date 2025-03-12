@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -10,10 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Second;
-
-import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -24,12 +21,14 @@ public class LEDSubsystem extends SubsystemBase {
     private static final RobotContainer robotContainer = RobotContainer.getInstance();
     private double lastExtakePosition = 0;
 
-    private static AddressableLED m_led;
-    private static AddressableLEDBuffer m_ledBuffer;
+    private static AddressableLED m_led = new AddressableLED(0);
+    private static AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.numLEDs);
+    private static AddressableLEDBufferView m_leftData = m_ledBuffer.createView(0, 43);
+    private static AddressableLEDBufferView m_rightData = m_ledBuffer.createView(44, 86).reversed();
     private static LEDState state = LEDState.STARTUP;
     private static boolean blinkOff = false;
 
-    public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, Color.kBlack, Color.kDarkGreen);
+    public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, new Color(186, 185, 190), new Color(160, 0, 222));
     public static LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Constants.LEDs.kLedSpacing);
 
     /* Initialize all colors, this allows easy custom color creation */
@@ -94,9 +93,6 @@ public class LEDSubsystem extends SubsystemBase {
 
     public LEDSubsystem()
     {
-        m_led = new AddressableLED(0);
-
-        m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.numLEDs);
         m_led.setLength(m_ledBuffer.getLength());
 
         LEDPattern pattern = ScrollingGradient;
@@ -110,7 +106,8 @@ public class LEDSubsystem extends SubsystemBase {
     private static void setColor(robotColor color, int startIdx, int count) {
         Color WPIColor = new Color(color.r, color.g, color.b);
         LEDPattern pattern = LEDPattern.solid(WPIColor);
-        pattern.applyTo(m_ledBuffer);
+        pattern.applyTo(m_leftData);
+        pattern.applyTo(m_rightData);
         m_led.setData(m_ledBuffer);
     }
 
@@ -179,9 +176,7 @@ public class LEDSubsystem extends SubsystemBase {
             lastExtakePosition = robotContainer.ExtakeMotor.getEncoder().getPosition();
         }
 
-        // Change the LEDs if the state has changed
-        if (state != lastState) {
-            switch (state)
+        switch (state)
             {
                 case STARTUP:
                     setColor(state.config.animation);
@@ -190,6 +185,8 @@ public class LEDSubsystem extends SubsystemBase {
                     setColor(state.config.color);
             }
 
+        // Change the LEDs if the state has changed
+        if (state != lastState) {
             if (state.config.blink) {
                 blinkOff = false;
                 blinkTimer.restart();
