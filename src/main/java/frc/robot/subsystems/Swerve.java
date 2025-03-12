@@ -44,7 +44,7 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
 
-    // sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
+    gyro.calibrate();
 
     //Pathplanner stuff
     RobotConfig config = null;
