@@ -17,7 +17,7 @@ import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
-    public static final double stickDeadband = 0.1;
+    public static final double stickDeadband = 0.05;
 
     public static final class Swerve {
         // public static final int pigeonID = 8;
@@ -72,7 +72,7 @@ public final class Constants {
         public static final double angleKD = chosenModule.angleKD;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.28563;
+        public static final double driveKP = 0.59929;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
@@ -147,12 +147,12 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 4.78;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 5;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Rotation2d.fromDegrees(400).getRadians();
+        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Rotation2d.fromDegrees(540).getRadians();
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Rotation2d.fromDegrees(720).getRadians();
         public static final double kMass = 37.6;
-        public static final double kMOI = 4.367;
+        public static final double kMOI = 6.883;
 
         /* Auton Angle Motor PID Values */
         public static final double angleKP = Swerve.angleKP;
@@ -160,7 +160,7 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
         public static final double angleKD = Swerve.angleKD;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.28563;
+        public static final double driveKP = Swerve.driveKP;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
     
@@ -183,9 +183,9 @@ new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, canBusID, angl
     public static final class LEDs {
          /* LED arrangement */
         public static final int startIdx = 0;
-        public static final int numLEDs = 86;
+        public static final int numLEDs = 83;
         public static final int totalLEDs = startIdx + numLEDs;
-        public static final Distance kLedSpacing = Meters.of(1 / 60);
+        public static final Distance kLedSpacing = Meters.of(1.0/ 60.0);
 
         /* Misc */
         public static final double blinkRate = 0.1; // Regular blink rate

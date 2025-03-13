@@ -23,16 +23,17 @@ public class LEDSubsystem extends SubsystemBase {
     private static final RobotContainer robotContainer = RobotContainer.getInstance();
     private double lastExtakePosition = 0;
 
+    /*100 was 86 */
     private static AddressableLED m_led = new AddressableLED(0);
     private static AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.numLEDs);
-    private static AddressableLEDBufferView m_leftData = m_ledBuffer.createView(0, 43);
-    private static AddressableLEDBufferView m_rightData = m_ledBuffer.createView(44, 86).reversed();
+    // private static AddressableLEDBufferView m_leftData = m_ledBuffer.createView(0, 43);
+    // private static AddressableLEDBufferView m_rightData = m_ledBuffer.createView(44, 83).reversed();
     private static LEDState state = LEDState.STARTUP;
     private static LEDState lastState;
     private static boolean blinkOff = false;
 
-    public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, new Color(186, 185, 190), new Color(160, 0, 222));
-    public static LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Constants.LEDs.kLedSpacing);
+    public static final LEDPattern GSMSTGradient = LEDPattern.gradient(GradientType.kContinuous, new Color(10, 10, 10), new Color(160, 0, 222));
+    public static LEDPattern ScrollingGradient = GSMSTGradient.scrollAtAbsoluteSpeed(MetersPerSecond.of(.5), Constants.LEDs.kLedSpacing);
 
     /* Initialize all colors, this allows easy custom color creation */
     private enum robotColor {
@@ -61,7 +62,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     private static class LEDConfig {
-        LEDPattern animation = null;
+        LEDPattern animation = ScrollingGradient;
         robotColor color = null;
         boolean blink = false;
 
@@ -109,8 +110,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static void setColor(robotColor color, int startIdx, int count) {
         Color WPIColor = new Color(color.r, color.g, color.b);
         LEDPattern pattern = LEDPattern.solid(WPIColor);
-        pattern.applyTo(m_leftData);
-        pattern.applyTo(m_rightData);
+        pattern.applyTo(m_ledBuffer);
         m_led.setData(m_ledBuffer);
     }
 
@@ -123,7 +123,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     private static void setColor(LEDPattern pattern) {
-        pattern.applyTo(m_ledBuffer);
+        ScrollingGradient.applyTo(m_ledBuffer);
         m_led.setData(m_ledBuffer);
     }
 
@@ -154,11 +154,14 @@ public class LEDSubsystem extends SubsystemBase {
             boolean extakeTrigger = (robotContainer.lowShooter.getAsBoolean() || robotContainer.highShooter.getAsBoolean() || robotContainer.intakeReset.getAsBoolean());
             if (extakeTrigger)
             {
-                state = LEDState.EXTAKE;
+                if (!robotContainer.intakeReset.getAsBoolean())
+                {
+                    state = LEDState.EXTAKE;
+                }
                 tempStateTimer.restart();
             } else if (robotContainer.ExtakeMotor.getEncoder().getPosition() != lastExtakePosition)
                 {
-                    if (!tempStateTimer.isRunning() && !extakeTrigger)
+                    if (!tempStateTimer.isRunning() && !extakeTrigger && !robotContainer.intakeReset.getAsBoolean())
                     {
                         if (state != LEDState.INTAKE)
                         {

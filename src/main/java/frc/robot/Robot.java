@@ -75,7 +75,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         DogLog.log("Misc/Robot Status", "TeleOp has begun");
-        
         // ensures Auton stops during Teleop
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
