@@ -60,10 +60,10 @@ public class Swerve extends SubsystemBase {
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            (speeds, feedforwards) -> driveRobotRelative(speeds, false), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(Constants.AutoConstants.driveKP, Constants.AutoConstants.driveKI, Constants.AutoConstants.driveKD), // Translation PID constants
-                    new PIDConstants(Constants.AutoConstants.angleKP, Constants.AutoConstants.angleKI, Constants.AutoConstants.angleKD) // Rotation PID constants
+                    new PIDConstants(4.9, 0, 0.1), // Translation PID constants
+                    new PIDConstants(0.6, 0.0, 0.1) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
@@ -79,7 +79,8 @@ public class Swerve extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
         );
-
+        
+        /*
         PathPlannerLogging.setLogTargetPoseCallback((targetPose) -> {
             DogLog.log("Pose/Auto Target Pose", targetPose);
         });
@@ -89,6 +90,7 @@ public class Swerve extends SubsystemBase {
         PathPlannerLogging.setLogCurrentPoseCallback((currentPose) -> {
             DogLog.log("Pose/PP Current Pose", currentPose);
         });
+         */
     }
 
     boolean isAllianceFlip() {
@@ -139,7 +141,7 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
-    }
+
 
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -222,7 +224,7 @@ public class Swerve extends SubsystemBase {
         return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
     }
 
-    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds, boolean isOpenLoop) {
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
 
         SwerveModuleState[] targetStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(targetSpeeds);
@@ -232,7 +234,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
+        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()), false);
     }
 
     public void startMonitoring() {
@@ -244,7 +246,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void stop() {
-        driveRobotRelative(new ChassisSpeeds());
+        driveRobotRelative(new ChassisSpeeds(), false);
 
         DogLog.log("Swerve/Status", "Stopped Swerve");
     }

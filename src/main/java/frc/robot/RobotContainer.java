@@ -70,7 +70,7 @@ public class RobotContainer {
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    new EventTrigger("Extake").whileTrue(new InstantCommand(() -> ExtakeMotor.set(-0.8)));
+    new EventTrigger("Extake").whileTrue(new InstantCommand(() -> ExtakeMotor.set(-0.6)));
     new EventTrigger("Extake").whileFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
     s_Swerve.setDefaultCommand(

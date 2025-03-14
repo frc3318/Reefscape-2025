@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.783036747685185,
-        "y": 4.0
+        "x": 5.4304303278688515,
+        "y": 3.983043032786885
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.248820045199126,
-        "y": 2.6652895562267656
+        "x": 6.276594399855797,
+        "y": 1.47264344262295
       },
       "isLocked": false,
       "linkedName": "P1 End"
     },
     {
       "anchor": {
-        "x": 0.94575,
-        "y": 0.35899999999999976
+        "x": 0.43155737704918024,
+        "y": -0.020850409836065183
       },
       "prevControl": {
-        "x": 4.563984854206087,
-        "y": 0.42589816159796673
+        "x": 4.049792231255266,
+        "y": 0.04604775176190255
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "P2 End"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 50.83663123593552
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,8 +46,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 52.64100000000002
+    "velocity": 0.0,
+    "rotation": 53.365999999999985
   },
   "reversed": false,
   "folder": "Center Coral",

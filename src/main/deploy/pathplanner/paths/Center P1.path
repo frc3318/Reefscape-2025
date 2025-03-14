@@ -8,7 +8,7 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.718561222118959,
+        "x": 5.718561222118959,
         "y": 4.0
       },
       "isLocked": false,
@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.783036747685185,
-        "y": 4.0
+        "x": 5.4304303278688515,
+        "y": 3.983043032786885
       },
       "prevControl": {
-        "x": 6.033036747685185,
-        "y": 4.0
+        "x": 6.4304303278688515,
+        "y": 3.983043032786885
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,8 +34,8 @@
   "eventMarkers": [
     {
       "name": "Extake",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
+      "waypointRelativePos": 0.9482431149097832,
+      "endWaypointRelativePos": 1.0,
       "command": null
     }
   ],
