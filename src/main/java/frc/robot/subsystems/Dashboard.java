@@ -75,11 +75,11 @@ public class Dashboard {
 
         /* Adds field element to overview tab */
         swerveOverview.add(odometryField).withSize(20, 6).withPosition(9, 0);
-        swerveOverview.add("Swerve", swerveData).withWidget("SwerveDrive").withPosition(16, 5);
-        swerveOverview.add("Auton Selector", autoChooser).withSize(6, 4);
+        // swerveOverview.add("Swerve", swerveData).withWidget("SwerveDrive").withPosition(16, 5);
+        swerveOverview.add("Auton Selector", autoChooser).withSize(7, 6).withPosition(16, 6);
 
-        ShuffleboardLayout modulePositions = swerveOverview.getLayout("Module Headings", BuiltInLayouts.kGrid).withSize(9, 11).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2));
-        ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 5).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
+        ShuffleboardLayout modulePositions = swerveOverview.getLayout("Module Headings", BuiltInLayouts.kGrid).withSize(9, 12).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2));
+        ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 6).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
         
         for (int i = 0; i < 4; i++)
         {
