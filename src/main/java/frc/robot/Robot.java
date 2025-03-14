@@ -11,14 +11,12 @@ import frc.robot.subsystems.LEDSubsystem;
 public class Robot extends TimedRobot {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     private Command m_autonomousCommand;
-    private RobotContainer m_robotContainer;
+    private Dashboard m_Dashboard;
 
     @Override
     public void robotInit() {
-        m_robotContainer = RobotContainer.getInstance();
-
         // Start Subsystems
-        new Dashboard();
+        m_Dashboard = new Dashboard();
         new LEDSubsystem();
 
         var alliance = DriverStation.getAlliance();
@@ -57,7 +55,8 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         DogLog.log("Misc/Robot Status", "Auto has begun");
 
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        m_autonomousCommand = m_Dashboard.autoChooser.getSelected();
+        
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             DogLog.log("Misc/Robot Status", "Running auto command " + m_autonomousCommand.getName());

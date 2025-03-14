@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -26,8 +25,6 @@ public class LEDSubsystem extends SubsystemBase {
     /*100 was 86 */
     private static AddressableLED m_led = new AddressableLED(0);
     private static AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.numLEDs);
-    // private static AddressableLEDBufferView m_leftData = m_ledBuffer.createView(0, 43);
-    // private static AddressableLEDBufferView m_rightData = m_ledBuffer.createView(44, 83).reversed();
     private static LEDState state = LEDState.STARTUP;
     private static LEDState lastState;
     private static boolean blinkOff = false;

@@ -1,6 +1,6 @@
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+
 import com.pathplanner.lib.events.EventTrigger;
 import com.revrobotics.spark.*;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -11,13 +11,11 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
 
@@ -52,9 +50,6 @@ public class RobotContainer {
   	/* Subsystems */
   	public final Swerve s_Swerve = new Swerve();
 
-  	/* Auton Selection */
-  	private final SendableChooser<Command> autoChooser;
-
   	private RobotContainer() 
   	{
     	DogLog.setOptions(
@@ -66,9 +61,6 @@ public class RobotContainer {
             .withLogExtras(true));
             
     extakeTrigger = (lowShooter.getAsBoolean() || highShooter.getAsBoolean() || intakeReset.getAsBoolean());
-    autoChooser = AutoBuilder.buildAutoChooser();
-
-    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     new EventTrigger("Extake").whileTrue(new InstantCommand(() -> ExtakeMotor.set(-0.6)));
     new EventTrigger("Extake").whileFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
@@ -98,10 +90,6 @@ public class RobotContainer {
 
   	public static RobotContainer getInstance() {
     	return m_robotContainer;
-  	}
-
-  	public Command getAutonomousCommand() {
-    	return autoChooser.getSelected();
   	}
 
 	public void rumble() {

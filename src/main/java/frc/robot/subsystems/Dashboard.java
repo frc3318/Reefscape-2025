@@ -2,15 +2,18 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 
 import frc.robot.RobotContainer;
 import frc.robot.SwerveModule;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 public class Dashboard {
     private static RobotContainer mRobotContainer = RobotContainer.getInstance();
@@ -53,9 +56,13 @@ public class Dashboard {
     private static GenericEntry[][] angleMotorEntries = new GenericEntry[4][8];
     private static GenericEntry[][] driveMotorEntries = new GenericEntry[4][8];
 
+    /* Auton Selection */
+    public final SendableChooser<Command> autoChooser;
 
     public Dashboard()
     {
+        autoChooser = AutoBuilder.buildAutoChooser();
+
         SwerveModule[] modules = swerve.mSwerveMods;
         SwerveData swerveData = new SwerveData();
 
@@ -69,6 +76,7 @@ public class Dashboard {
         /* Adds field element to overview tab */
         swerveOverview.add(odometryField).withSize(20, 6).withPosition(9, 0);
         swerveOverview.add("Swerve", swerveData).withWidget("SwerveDrive").withPosition(16, 5);
+        swerveOverview.add("Auton Selector", autoChooser).withSize(6, 4);
 
         ShuffleboardLayout modulePositions = swerveOverview.getLayout("Module Headings", BuiltInLayouts.kGrid).withSize(9, 11).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2));
         ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 5).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
