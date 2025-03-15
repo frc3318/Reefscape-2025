@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.473360655737705,
-        "y": 5.901075819672131
+        "x": 4.483401639344262,
+        "y": 3.815215163934426
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9385813806661254,
-        "y": 3.9948589051110175
+        "x": 3.76244452118618,
+        "y": 3.122235486182478
       },
       "isLocked": false,
       "linkedName": "P3 End"
     },
     {
       "anchor": {
-        "x": 0.43155737704918024,
-        "y": -0.020850409836065183
+        "x": 0.4,
+        "y": 0.3
       },
       "prevControl": {
-        "x": 0.6344271033027651,
-        "y": 0.12524501846268607
+        "x": 1.1130236798105835,
+        "y": 1.00113995181374
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "IntakeReturn",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 114.6768631703371
+    "rotation": 53.365999999999985
   },
   "useDefaultConstraints": true
 }

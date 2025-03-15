@@ -74,15 +74,15 @@ public class RobotContainer {
             () -> false));
 
 
-    lowShooter.onTrue(new InstantCommand(() -> ExtakeMotor.set(-.6)));
+    lowShooter.onTrue(new InstantCommand(() -> ExtakeMotor.set(-0.7)));
     lowShooter.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
-    highShooter.onTrue(new InstantCommand(() -> ExtakeMotor.set(-1)));
+    highShooter.onTrue(new InstantCommand(() -> ExtakeMotor.set(-1.0)));
     highShooter.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
 
-    intakeReset.onTrue(new InstantCommand(() -> ExtakeMotor.set(2)));
+    intakeReset.onTrue(new InstantCommand(() -> ExtakeMotor.set(2.5)));
     intakeReset.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
 	new WaitCommand(115).andThen(new RunCommand(() -> rumble())).schedule();

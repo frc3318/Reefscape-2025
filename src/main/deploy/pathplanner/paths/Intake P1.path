@@ -3,44 +3,39 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.43155737704918024,
-        "y": -0.020850409836065183
+        "x": 0.4,
+        "y": 0.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3452619345566759,
-        "y": 0.748690443099849
+        "x": 1.169237281836228,
+        "y": 0.9389632260413827
       },
       "isLocked": false,
       "linkedName": "P2 End"
     },
     {
       "anchor": {
-        "x": 6.473360655737705,
-        "y": 5.901075819672131
+        "x": 4.483401639344262,
+        "y": 3.815215163934426
       },
       "prevControl": {
-        "x": 5.377782675413631,
-        "y": 5.080062003121208
+        "x": 3.688688708276195,
+        "y": 3.2082296968981856
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "P3 End"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.3970411835265887,
-      "rotationDegrees": 19.46828008897029
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "Extake",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
+      "waypointRelativePos": 0.948243114909783,
+      "endWaypointRelativePos": 1.0,
       "command": null
     }
   ],
@@ -54,7 +49,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 114.6768631703371
+    "rotation": 53.365999999999985
   },
   "reversed": false,
   "folder": "IntakeReturn",

@@ -37,37 +37,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.75
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Return P1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Intake P1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Return P1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.8
           }
         }
       ]
