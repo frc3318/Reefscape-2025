@@ -55,7 +55,7 @@
   "folder": "IntakeReturn",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 53.365999999999985
+    "rotation": 53.0
   },
   "useDefaultConstraints": true
 }
