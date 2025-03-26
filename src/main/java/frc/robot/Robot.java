@@ -5,8 +5,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.cameraserver.CameraServer;
+
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.LEDSubsystem;
+
 
 public class Robot extends TimedRobot {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
@@ -20,6 +23,8 @@ public class Robot extends TimedRobot {
         new LEDSubsystem();
 
         var alliance = DriverStation.getAlliance();
+
+        CameraServer.startAutomaticCapture();
 
         DogLog.log("Misc/Robot Status", "Robot has Started");
         DogLog.log("DriverStation/Status", "Alliance recorded as " + alliance.toString());
