@@ -11,10 +11,12 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
@@ -44,8 +46,13 @@ public class RobotContainer {
 
   	public JoystickButton intakeReset = new JoystickButton(driver.getHID(), XboxController.Button.kY.value);
 
+	public JoystickButton hang = new JoystickButton(driver.getHID(), XboxController.Button.kLeftBumper.value);
+	public JoystickButton hangBack = new JoystickButton(driver.getHID(), XboxController.Button.kRightBumper.value);
+
+
   	/* Motor Controller */
   	public final SparkMax ExtakeMotor = new SparkMax(9, MotorType.kBrushless);
+	public final SparkMax winch = new SparkMax(2, MotorType.kBrushless);
 
   	/* Subsystems */
   	public final Swerve s_Swerve = new Swerve();
@@ -64,6 +71,11 @@ public class RobotContainer {
 
     new EventTrigger("Extake").whileTrue(new InstantCommand(() -> ExtakeMotor.set(-0.6)));
     new EventTrigger("Extake").whileFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
+
+	NamedCommands.registerCommand("zeroGyro", new InstantCommand(() -> s_Swerve.zeroHeading()));
+
+
+
 
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(
@@ -84,6 +96,12 @@ public class RobotContainer {
 
     intakeReset.onTrue(new InstantCommand(() -> ExtakeMotor.set(2.5)));
     intakeReset.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
+
+	hang.whileTrue(new InstantCommand(() -> winch.set(0.5)));
+	hang.whileFalse(new InstantCommand(()-> winch.set(0)));
+
+	hangBack.whileTrue(new InstantCommand(() -> winch.set(-0.5)));
+	hangBack.whileFalse(new InstantCommand(()-> winch.set(0)));
 
 	new WaitCommand(115).andThen(new RunCommand(() -> rumble())).schedule();
   }

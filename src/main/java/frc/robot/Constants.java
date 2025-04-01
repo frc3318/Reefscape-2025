@@ -85,7 +85,8 @@ public final class Constants {
         /* Swerve Profiling Values */
         /** Meters per Second */
         //was 4.78
-        public static final double maxSpeed = 4.78;
+        //was 5.143
+        public static final double maxSpeed = 5.143;
         /** Radians per Second */
         public static final double maxAngularVelocity = Rotation2d.fromDegrees(400).getRadians();
 
