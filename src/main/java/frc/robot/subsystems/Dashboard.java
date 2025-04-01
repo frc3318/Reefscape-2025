@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj2.command.Command;
-
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 
@@ -81,6 +80,9 @@ public class Dashboard {
         ShuffleboardLayout modulePositions = swerveOverview.getLayout("Module Headings", BuiltInLayouts.kGrid).withSize(9, 12).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2));
         ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 6).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
         
+        
+        swerveOverview.addCamera("Camera Stream", "Limelight", "http://frcvision.local:1181/stream.mjpg");
+
         for (int i = 0; i < 4; i++)
         {
             driveStatus = (modules[i].mDriveMotor.isConnected());

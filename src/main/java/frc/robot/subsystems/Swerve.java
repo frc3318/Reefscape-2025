@@ -4,14 +4,16 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import dev.doglog.DogLog;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -19,11 +21,13 @@ import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
 import frc.robot.SwerveModule;
+import frc.robot.commands.LimelightHelpers;
 
 public class Swerve extends SubsystemBase {
-    public SwerveDriveOdometry swerveOdometry;
+    public SwerveDrivePoseEstimator m_PoseEstimator;
     public SwerveModule[] mSwerveMods;
     public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     private AnalogOutput hourGlAnalog = new AnalogOutput(0);
@@ -41,7 +45,7 @@ public class Swerve extends SubsystemBase {
                 new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
+        m_PoseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions(), new Pose2d());
 
     gyro.calibrate();
 
@@ -79,7 +83,6 @@ public class Swerve extends SubsystemBase {
             this // Reference to this subsystem to set requirements
         );
         
-        /*
         PathPlannerLogging.setLogTargetPoseCallback((targetPose) -> {
             DogLog.log("Pose/Auto Target Pose", targetPose);
         });
@@ -89,7 +92,6 @@ public class Swerve extends SubsystemBase {
         PathPlannerLogging.setLogCurrentPoseCallback((currentPose) -> {
             DogLog.log("Pose/PP Current Pose", currentPose);
         });
-         */
     }
 
     boolean isAllianceFlip() {
@@ -169,11 +171,11 @@ public class Swerve extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return swerveOdometry.getPoseMeters();
+        return m_PoseEstimator.getEstimatedPosition();
     }
 
     public void setPose(Pose2d pose) {
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
+        m_PoseEstimator.resetPosition(getGyroYaw(), getModulePositions(), pose);
         DogLog.log("Pose/Status/Setting Pose", pose);
     }
 
@@ -182,12 +184,12 @@ public class Swerve extends SubsystemBase {
     }
 
     public void setHeading(Rotation2d heading) {
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
+        m_PoseEstimator.resetPosition(getGyroYaw(), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), heading));
     }
 
     public void zeroHeading() {
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
+        m_PoseEstimator.resetPosition(getGyroYaw(), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), new Rotation2d()));
         DogLog.log("Pose/Gyro/Status", "Zeroed Gyro Heading");
     }
@@ -204,7 +206,19 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        swerveOdometry.update(getGyroYaw(), getModulePositions());
+        m_PoseEstimator.update(getGyroYaw(), getModulePositions());
+
+        LimelightHelpers.SetRobotOrientation("", m_PoseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
+
+        if(!(mt2.tagCount == 0))
+        {
+            m_PoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            m_PoseEstimator.addVisionMeasurement(
+                mt2.pose,
+                mt2.timestampSeconds
+            );
+        }
 
         DogLog.log("Pose/Pose", getPose());
         DogLog.log("Pose/Gyro/Heading", getHeading().getDegrees());
@@ -217,7 +231,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
+        m_PoseEstimator.resetPosition(getGyroYaw(), getModulePositions(), pose);
     }
 
     public ChassisSpeeds getSpeeds() {
