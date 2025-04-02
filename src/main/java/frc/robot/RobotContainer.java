@@ -11,7 +11,6 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -66,16 +65,13 @@ public class RobotContainer {
             .withCaptureNt(true)
             .withLogEntryQueueCapacity(1000)
             .withLogExtras(true));
-            
+           
     extakeTrigger = (lowShooter.getAsBoolean() || highShooter.getAsBoolean() || intakeReset.getAsBoolean());
 
-    new EventTrigger("Extake").whileTrue(new InstantCommand(() -> ExtakeMotor.set(-0.6)));
-    new EventTrigger("Extake").whileFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
-
-	NamedCommands.registerCommand("zeroGyro", new InstantCommand(() -> s_Swerve.zeroHeading()));
-
-
-
+    new EventTrigger("Extake").onTrue(new InstantCommand(() -> lowExtake()));
+	new EventTrigger("extake34").onTrue(new InstantCommand(() -> lowExtake()));
+	new EventTrigger("extake34").onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
+	new EventTrigger("Extake").onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(
@@ -86,10 +82,10 @@ public class RobotContainer {
             () -> false));
 
 
-    lowShooter.onTrue(new InstantCommand(() -> ExtakeMotor.set(-0.7)));
+    lowShooter.onTrue(new InstantCommand(() -> lowExtake()));
     lowShooter.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
-    highShooter.onTrue(new InstantCommand(() -> ExtakeMotor.set(-1.0)));
+    highShooter.onTrue(new InstantCommand(() -> highExtake()));
     highShooter.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
@@ -112,5 +108,17 @@ public class RobotContainer {
 
 	public void rumble() {
 		driver.setRumble(RumbleType.kBothRumble, 1.0);
+	}
+
+	public void lowExtake()
+	{
+		ExtakeMotor.set(-0.7);
+		System.out.println("OUTPUTTING!!!!!");
+	}
+
+	public void highExtake()
+	{
+		ExtakeMotor.set(-1);
+		System.out.println("OUTPUTTING!!!!!");
 	}
 }

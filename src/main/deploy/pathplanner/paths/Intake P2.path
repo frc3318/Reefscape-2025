@@ -34,8 +34,8 @@
   "eventMarkers": [
     {
       "name": "Extake",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
+      "waypointRelativePos": 0.9451158106747248,
+      "endWaypointRelativePos": 1.0,
       "command": null
     }
   ],

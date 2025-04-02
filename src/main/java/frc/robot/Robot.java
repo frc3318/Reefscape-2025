@@ -24,8 +24,6 @@ public class Robot extends TimedRobot {
 
         var alliance = DriverStation.getAlliance();
 
-        CameraServer.startAutomaticCapture();
-
         DogLog.log("Misc/Robot Status", "Robot has Started");
         DogLog.log("DriverStation/Status", "Alliance recorded as " + alliance.toString());
     }

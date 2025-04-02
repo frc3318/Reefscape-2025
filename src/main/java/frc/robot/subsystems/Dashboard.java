@@ -81,7 +81,7 @@ public class Dashboard {
         ShuffleboardLayout moduleVelocities = swerveOverview.getLayout("Module Velocities", BuiltInLayouts.kGrid).withSize(7, 6).withProperties(Map.of("Number of Columns", 2, "Number of Rows", 2)).withPosition(9, 6);
         
         
-        swerveOverview.addCamera("Camera Stream", "Limelight", "http://frcvision.local:1181/stream.mjpg");
+        swerveOverview.addCamera("Camera Stream", "Limelight", "http://limelight.local:5800");
 
         for (int i = 0; i < 4; i++)
         {

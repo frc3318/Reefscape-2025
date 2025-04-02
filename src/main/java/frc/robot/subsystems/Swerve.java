@@ -209,15 +209,16 @@ public class Swerve extends SubsystemBase {
         m_PoseEstimator.update(getGyroYaw(), getModulePositions());
 
         LimelightHelpers.SetRobotOrientation("", m_PoseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
+        LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
 
-        if(!(mt2.tagCount == 0))
+        
+        if(mt1.tagCount != 0)
         {
             m_PoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
             m_PoseEstimator.addVisionMeasurement(
-                mt2.pose,
-                mt2.timestampSeconds
-            );
+               mt1.pose,
+               mt1.timestampSeconds
+           );
         }
 
         DogLog.log("Pose/Pose", getPose());

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.495,
-        "y": 4.044
+        "x": 3.841,
+        "y": 2.699
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.7740428818419183,
-        "y": 3.351020322248052
+        "x": 3.1200428818419184,
+        "y": 2.006020322248052
       },
       "isLocked": false,
-      "linkedName": "P3 End"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "P2 End"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 53.0
+    "rotation": -127.00000000000001
   },
   "reversed": false,
   "folder": "IntakeReturn",
