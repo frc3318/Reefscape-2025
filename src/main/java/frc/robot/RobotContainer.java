@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.WinchSubsystem;
 
 public class RobotContainer {
 	private static RobotContainer m_robotContainer = new RobotContainer();
@@ -53,8 +54,10 @@ public class RobotContainer {
   	public final SparkMax ExtakeMotor = new SparkMax(9, MotorType.kBrushless);
 	public final SparkMax winch = new SparkMax(2, MotorType.kBrushless);
 
+
   	/* Subsystems */
   	public final Swerve s_Swerve = new Swerve();
+	public final WinchSubsystem s_WinchSubsystem = new WinchSubsystem();
 
   	private RobotContainer() 
   	{
@@ -93,10 +96,10 @@ public class RobotContainer {
     intakeReset.onTrue(new InstantCommand(() -> ExtakeMotor.set(2.5)));
     intakeReset.onFalse(new InstantCommand(() -> ExtakeMotor.set(0)));
 
-	hang.whileTrue(new InstantCommand(() -> winch.set(0.5)));
+	hang.whileTrue(new InstantCommand(() -> winch.set(0.7)));
 	hang.whileFalse(new InstantCommand(()-> winch.set(0)));
 
-	hangBack.whileTrue(new InstantCommand(() -> winch.set(-0.5)));
+	hangBack.whileTrue(new InstantCommand(() -> winch.set(-0.7)));
 	hangBack.whileFalse(new InstantCommand(()-> winch.set(0)));
 
 	new WaitCommand(115).andThen(new RunCommand(() -> rumble())).schedule();

@@ -1,12 +1,14 @@
 package frc.robot;
 
+import com.revrobotics.spark.SparkMax;
+
 import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.cameraserver.CameraServer;
-
+import edu.wpi.first.math.controller.PIDController;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.LEDSubsystem;
 
@@ -16,11 +18,16 @@ public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private Dashboard m_Dashboard;
 
+    private PIDController  pid = new PIDController(.1, 0, 0);
+    private SparkMax winch;
+
     @Override
     public void robotInit() {
         // Start Subsystems
         m_Dashboard = new Dashboard();
         new LEDSubsystem();
+
+        // winch = RobotContainer.getInstance().winch;
 
         var alliance = DriverStation.getAlliance();
 
@@ -40,6 +47,7 @@ public class Robot extends TimedRobot {
         // WILL break all robot mechanisms, required to listen for commands
         CommandScheduler.getInstance().run();
         DogLog.log("Misc/FMS Match Time", DriverStation.getMatchTime());
+        // winch.set(pid.calculate(winch.getAbsoluteEncoder().getPosition(), winch.getAbsoluteEncoder().getPosition()));
     }
 
 

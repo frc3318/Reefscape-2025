@@ -48,7 +48,7 @@
   "folder": "Right Coral",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 30.105999999999995
+    "rotation": 121.43355100528923
   },
   "useDefaultConstraints": true
 }
