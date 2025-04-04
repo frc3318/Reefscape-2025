@@ -19,7 +19,6 @@ public class Robot extends TimedRobot {
     private Dashboard m_Dashboard;
 
     private PIDController  pid = new PIDController(.1, 0, 0);
-    private SparkMax winch;
 
     @Override
     public void robotInit() {

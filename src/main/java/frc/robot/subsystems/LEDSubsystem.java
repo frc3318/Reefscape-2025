@@ -148,17 +148,14 @@ public class LEDSubsystem extends SubsystemBase {
             if (tempStateTimer.isRunning() && tempStateTimer.hasElapsed(Constants.LEDs.tempStateTime)) {
                 tempStateTimer.stop();
             }
-            boolean extakeTrigger = (robotContainer.lowShooter.getAsBoolean() || robotContainer.highShooter.getAsBoolean() || robotContainer.intakeReset.getAsBoolean());
+            boolean extakeTrigger = robotContainer.s_Shooter.getShooterMoving();
             if (extakeTrigger)
             {
-                if (!robotContainer.intakeReset.getAsBoolean())
-                {
-                    state = LEDState.EXTAKE;
-                }
+                state = LEDState.EXTAKE;
                 tempStateTimer.restart();
-            } else if (robotContainer.ExtakeMotor.getEncoder().getPosition() != lastExtakePosition)
+            } else if (robotContainer.s_Shooter.getShooterPosition() != lastExtakePosition)
                 {
-                    if (!tempStateTimer.isRunning() && !extakeTrigger && !robotContainer.intakeReset.getAsBoolean())
+                    if (!tempStateTimer.isRunning() && !extakeTrigger)
                     {
                         if (state != LEDState.INTAKE)
                         {
@@ -174,7 +171,7 @@ public class LEDSubsystem extends SubsystemBase {
                 state = LEDState.NORMAL;
             }
 
-            lastExtakePosition = robotContainer.ExtakeMotor.getEncoder().getPosition();
+            lastExtakePosition = robotContainer.s_Shooter.getShooterPosition();
         }
 
         switch (state)

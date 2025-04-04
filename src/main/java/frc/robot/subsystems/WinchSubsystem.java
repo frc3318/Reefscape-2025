@@ -1,22 +1,35 @@
 package frc.robot.subsystems;
+
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 public class WinchSubsystem extends SubsystemBase {
-    private SparkMax winch;
+    public static final SparkMax motor = new SparkMax(2, MotorType.kBrushless);
     
-    
-
-    public WinchSubsystem()
+    public Command doHang()
     {
-        // winch = RobotContainer.getInstance().winch;
+        return Commands.startEnd(
+            () -> WinchSubsystem.set(-0.7), 
+            () -> WinchSubsystem.set(0), 
+            this
+        );
     }
 
-    @Override
-    public void periodic() {
-        
+    public Command resetHang()
+    {
+        return Commands.startEnd(
+            () -> WinchSubsystem.set(0.7), 
+            () -> WinchSubsystem.set(0), 
+            this
+        );
+    }
+
+    public static void set(double speed)
+    {
+        motor.set(speed);
     }
 }
